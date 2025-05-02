@@ -15,7 +15,7 @@ log_file = f'{log_dir}/publisher_log_{date.year}-{date.month}-{date.day}.log'
 error_log_file = f'{log_dir}/publisher_error_log_{date.year}-{date.month}-{date.day}.log'
 
 logging.basicConfig(
-    level=logging.DEBUG,  # Set to DEBUG for detailed logs
+    level=logging.DEBUG,  # Set to debug for detailed logs
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(log_file)
@@ -98,3 +98,4 @@ for future in concurrent_futures.as_completed(futures):
 
 logging.info(f"Total Pub/Sub messages published: {message_count}")
 print(f"Total Pub/Sub messages published: {message_count}")
+

@@ -126,8 +126,6 @@ def write_timestamp():
     except Exception as e:
         log_error(e, "timestamp")
 
-# executor.submit(write_timestamp)
-
 def process_message(json_obj, message):
     try:
         write_bus_data(json_obj)
@@ -146,66 +144,6 @@ def callback(message: pubsub_v1.subscriber.message.Message) -> None:
     except Exception as e:
         log_error(e, "message parse error")
         message.nack()
-
-'''
-# Process the messages
-def callback(message: pubsub_v1.subscriber.message.Message) -> None:
-    global COUNT#, event_trip_meters, all_event_no_trip, event_trip_vehicle
-    
-    try:
-        json_obj = json.loads(message.data.decode("utf-8"))
-    
-        # Offload work
-        executor.submit(write_bus_data, json_obj)
-        executor.submit(lambda: open("/home/saeah/timestamp.txt", "a").write(f"{datetime.datetime.now().isoformat()}\n"))
-    
-        increment_message_count()
-        message.ack()
-
-    except Exception as e:
-        log_error(e, "message error")
-        message.nack()
-
-    
-    try:
-        # Parse the JSON message
-        json_obj = json.loads(message.data.decode("utf-8"))
-        
-        # Validate the event data
-        #validation(json_obj)
-        
-        # If assertions pass, process the message
-        #bus = json_obj["VEHICLE_ID"]
-
-        # Save bus data as JSON file
-        #with open(f'data/subscriber/{date.year}/{date.month}/{date.day}/all_buses.json', 'a') as f:
-        #    json.dump(json_obj, f)
-        #    f.write('\n')
-        
-        # Write current timestamp to /home/saeah/timestamp.txt
-        #with open("/home/saeah/timestamp.txt", "a") as ts_file:
-        #    ts_file.write(f"{datetime.datetime.now().isoformat()}\n")
-       
-        # Increase message count
-        increment_message_count()
-
-    except Exception as e:
-        log_error(e, "message error")
-        message.nack()
-'''
-
-
-
-'''
-def callback(message: pubsub_v1.subscriber.message.Message) -> None:
-    try:
-        json_obj = json.loads(message.data.decode("utf-8"))
-        print(f"Received: {json_obj.get('VEHICLE_ID')}")
-        message.ack()
-    except Exception as e:
-        print(f"Error: {e}")
-        message.nack()
-'''
 
 # Main program
 def main():
