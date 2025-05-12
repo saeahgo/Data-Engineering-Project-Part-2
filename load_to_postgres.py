@@ -129,9 +129,3 @@ def load_final_data(output_path):
     return 1
 
 
-def main():
-    load_final_data("data/2025/4/21/all_buses_final.csv") #9/all_buses.csv")
-
-
-if __name__ == "__main__":
-    main()
