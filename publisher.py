@@ -7,6 +7,21 @@ from google.cloud import pubsub_v1
 from google.oauth2 import service_account
 from concurrent import futures as concurrent_futures
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Set up logging
 date = datetime.datetime.now()
 log_dir = f'data/publisher/logs/{date.year}/{date.month}'
@@ -67,7 +82,6 @@ def log_error(error, bus_id):
 
 # Main: Retrieve data for each bus
 message_count = 0
-futures = []
 
 for bus in vehicles:
     logging.info(f'Fetching data for Bus {bus}')
@@ -79,15 +93,14 @@ for bus in vehicles:
             data_str = json.dumps(message)
             # Data must be a bytestring
             data_bytes = data_str.encode("utf-8")
-            # When you publish a message, the client returns a future.
-            future = publisher.publish(topic_path, data_bytes)
-            futures.append(future)
-            message_count += 1  # Count each message
-            # logging.debug(f"Message published for bus {bus}: {data_str}")
-
+            try:
+                publisher.publish(topic_path, data_bytes)
+                message_count += 1  # Count each message
+            except Exception as pub_e:
+                logging.error(f"Error publishing message for bus {bus}: {pub_e}")
     except Exception as e:
         log_error(e, bus)
-
+'''
 # Wait for all futures to complete
 logging.info("Waiting for all messages to be published.")
 for future in concurrent_futures.as_completed(futures):
@@ -95,7 +108,7 @@ for future in concurrent_futures.as_completed(futures):
         future.result()
     except Exception as e:
         logging.error(f"Publishing error: {e}")
-
+'''
 logging.info(f"Total Pub/Sub messages published: {message_count}")
 print(f"Total Pub/Sub messages published: {message_count}")
 
